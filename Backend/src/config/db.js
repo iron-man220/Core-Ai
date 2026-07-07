@@ -1,42 +1,60 @@
-const sql = require('mssql');
+import sql from 'mssql';
+import dotenv from 'dotenv';
+dotenv.config();
 
-const dbConfig = {
-    user: process.env.DB_USER || 'sa',
-    password: process.env.DB_PASSWORD || 'your_password',
-    server: process.env.DB_SERVER || 'localhost',
-    database: process.env.DB_NAME || 'YourDatabaseName',
+const dbServer = process.env.DB_SERVER || 'localhost';
+const [serverHost, instanceName] = dbServer.split('\\');
+const dbPort = parseInt(process.env.DB_PORT || '1433', 10);
+
+const createConfig = (host, instance, port) => {
+  const cfg = {
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    server: host,
+    database: process.env.DB_DATABASE,
     options: {
-        encrypt: true, // Use this if you're on Windows Azure
-        trustServerCertificate: true // Change to true for local dev / self-signed certs
+      encrypt: false, // Use true for azure
+      trustServerCertificate: true, // Use true for local development
+      connectTimeout: 4000,
     }
+  };
+  if (instance) {
+    cfg.options.instanceName = instance;
+  } else {
+    cfg.port = port;
+  }
+  return cfg;
 };
 
-class Database {
-    constructor() {
-        this.pool = null;
-    }
+// Failover configurations sequence
+const configsToTry = [
+  createConfig('127.0.0.1', instanceName, null),
+  createConfig('localhost', instanceName, null),
+  createConfig(serverHost, instanceName, null),
+  createConfig('127.0.0.1', null, dbPort),
+  createConfig(serverHost, null, dbPort)
+];
 
-    async connect() {
-        try {
-            if (this.pool) {
-                return this.pool;
-            }
-            this.pool = await sql.connect(dbConfig);
-            console.log('Connected to SQL Server successfully.');
-            return this.pool;
-        } catch (error) {
-            console.error('Database connection failed:', error);
-            throw error;
-        }
-    }
+let activePool;
 
-    async getPool() {
-        if (!this.pool) {
-            await this.connect();
-        }
-        return this.pool;
-    }
-}
+/**
+ * Returns a connection pool promise
+ * Silently attempts failover connections and caches the working pool
+ */
+const getPool = async () => {
+  if (activePool) return activePool;
 
-// Export a singleton instance
-module.exports = new Database();
+  for (let i = 0; i < configsToTry.length; i++) {
+    try {
+      const pool = await new sql.ConnectionPool(configsToTry[i]).connect();
+      activePool = pool;
+      return pool;
+    } catch (err) {
+      // Fail silently to keep the logs clean.
+    }
+  }
+
+  throw new Error('All SQL Server connection configurations failed. Please make sure that SQLEXPRESS is running and user credentials in .env are correct.');
+};
+
+export { sql, getPool };

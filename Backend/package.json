@@ -2,11 +2,11 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "Backend API for AWD Project",
-  "main": "server.js",
+  "main": "src/server.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon server.js",
-    "dev": "node --watch server.js"
+    "start": "nodemon src/server.js",
+    "dev": "node --watch src/server.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -14,6 +14,7 @@
     "express": "^4.22.2",
     "firebase": "^12.15.0",
     "firebase-admin": "^14.1.0",
+    "mongoose": "^9.7.4",
     "mssql": "^11.0.1",
     "pg": "^8.22.0"
   }

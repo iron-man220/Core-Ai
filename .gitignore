@@ -1,7 +1,6 @@
 # Dependencies
 node_modules/
 */node_modules/
-Backend/firebase-Auth.json
 # Build outputs
 dist/
 build/

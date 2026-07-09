@@ -18,7 +18,7 @@ export function Home() {
   }, [setTheme]);
 
   const handleNotify = () => {
-    addToast('🎉 Welcome to the AWD Project!', 'success');
+    addToast('🎉 Welcome to Core AI!', 'success');
   };
 
   return (
@@ -42,7 +42,7 @@ export function Home() {
 
           <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight mb-6 leading-tight">
             Build Faster with <br className="hidden sm:block" />
-            <span className="text-gradient">AWD Project</span>
+            <span className="text-gradient">Core AI</span>
           </h1>
 
           <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
@@ -122,7 +122,7 @@ export function Home() {
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">What Developers Say</h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Don't just take our word for it. Here is what the community has to say about AWD Project.
+              Don't just take our word for it. Here is what the community has to say about Core AI.
             </p>
           </div>
           

@@ -10,7 +10,7 @@ export const Home = () => {
         className="text-center max-w-3xl"
       >
         <h1 className="text-5xl md:text-7xl font-bold mb-6">
-          <span className="text-gradient">Welcome</span> to AWD Project
+          <span className="text-gradient">Welcome</span> to Core AI
         </h1>
         <p className="text-lg text-muted-foreground mb-10 leading-relaxed">
           A modern full-stack web application built with React and Node.js.

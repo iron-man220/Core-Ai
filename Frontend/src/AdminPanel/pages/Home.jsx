@@ -7,8 +7,8 @@ import {
   Sparkles, Shield
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import WebGLBackground from '../components/WebGLBackground';
-import logoImg from '../logo2.png';
+import WebGLBackground from '../../components/WebGLBackground';
+import logoImg from '../../assets/logo2.png';
 
 const FadeIn = ({ children, delay = 0, className = '' }) => {
   const ref = useRef(null);
@@ -87,7 +87,7 @@ const Landing = () => {
       >
         {/* Logo */}
         <div className="flex items-center gap-3 mb-6 px-2">
-          <img src={logoImg} alt="Logo" className="w-7 h-7 object-contain" />
+          <img src={logoImg} alt="Logo" className="w-12 h-12 object-contain drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]" />
           <span className="text-lg font-bold tracking-wide">Core AI</span>
         </div>
 

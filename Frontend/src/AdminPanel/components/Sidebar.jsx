@@ -8,7 +8,7 @@ import {
   LogOut,
 } from 'lucide-react';
 
-import logoImg from '../../logo2.png';
+import logoImg from '../../assets/logo2.png'; 
 
 const navItems = [
   { label: 'Dashboard', path: '/admin', icon: LayoutDashboard },
@@ -24,8 +24,8 @@ export const AdminSidebar = () => {
   return (
     <aside className="w-64 min-h-screen bg-card border-r border-border flex flex-col">
       {/* Logo */}
-      <div className="p-6 border-b border-border flex items-center gap-2">
-        <img src={logoImg} alt="Logo" className="w-8 h-8 object-contain" />
+      <div className="p-6 border-b border-border flex items-center gap-3">
+        <img src={logoImg} alt="Logo" className="w-12 h-12 object-contain drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]" />
         <span className="text-xl font-bold text-gradient">Admin Panel</span>
       </div>
 

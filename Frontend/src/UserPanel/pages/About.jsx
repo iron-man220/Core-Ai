@@ -9,7 +9,7 @@ export const About = () => {
         transition={{ duration: 0.5 }}
         className="max-w-3xl mx-auto text-center mb-16"
       >
-        <h1 className="text-4xl md:text-5xl font-bold mb-6">About AWD Project</h1>
+        <h1 className="text-4xl md:text-5xl font-bold mb-6">About Core AI</h1>
         <p className="text-xl text-muted-foreground">
           We are dedicated to providing the best starter template for your next full-stack React application. Built with modern tools for modern developers.
         </p>

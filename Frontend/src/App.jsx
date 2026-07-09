@@ -8,8 +8,8 @@ import { ToastProvider } from './context/ToastContext';
 import { Toaster } from './components/Toaster';
 
 // ─── Root Pages (src/page) ────────────────────────────────
-import { Home } from './page/Home';
-import Landing from './page/landing';
+import { Home } from './page/LendingPage';
+import Landing from './AdminPanel/pages/Home';
 import Features from './page/Features';
 import Performance from './page/Performance';
 import Security from './page/Security';
@@ -38,7 +38,7 @@ function App() {
           <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
             <Routes>
               {/* ── Standalone Pages ── */}
-              <Route path="/" element={<Landing />} />
+              <Route path="/dashboard" element={<Landing />} />
               <Route path="/features" element={<Features />} />
               <Route path="/performance" element={<Performance />} />
               <Route path="/security" element={<Security />} />
@@ -48,6 +48,7 @@ function App() {
 
               {/* ── User Panel (with Header & Footer) ─── */}
               <Route element={<UserLayout />}>
+                <Route path="/" element={<Home />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/shop" element={<Shop />} />
                 <Route path="/about" element={<About />} />

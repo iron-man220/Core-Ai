@@ -30,7 +30,7 @@ export default function SignIn() {
           localStorage.setItem("token", response.user.firebaseToken);
         }
         // Redirect to Home panel
-        navigate("/home");
+        navigate("/dashboard");
       } else {
         addToast(response.message || "Authentication failed.", "error");
       }
@@ -55,7 +55,7 @@ export default function SignIn() {
         addToast("Google Authentication successful!", "success");
         localStorage.setItem("user", JSON.stringify(response.user));
         localStorage.setItem("token", response.user.firebaseToken);
-        navigate("/home");
+        navigate("/dashboard");
       } else {
         addToast(response.message || "Google Authentication failed.", "error");
       }

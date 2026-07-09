@@ -21,7 +21,7 @@ export const Contact = () => {
       >
         <h1 className="text-4xl md:text-5xl font-bold mb-6">Get in Touch</h1>
         <p className="text-xl text-muted-foreground">
-          Have questions about the AWD Project? Want to contribute? Send us a message and we'll respond as soon as possible.
+          Have questions about Core AI? Want to contribute? Send us a message and we'll respond as soon as possible.
         </p>
       </motion.div>
 

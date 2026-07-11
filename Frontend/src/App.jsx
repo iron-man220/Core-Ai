@@ -10,6 +10,12 @@ import { Toaster } from './components/Toaster';
 // ─── Root Pages (src/page) ────────────────────────────────
 import { Home } from './page/LendingPage';
 import Landing from './Dashboard/pages/Home';
+import { ImagesPage } from './Dashboard/pages/ImagesPage';
+import { VideosPage } from './Dashboard/pages/VideosPage';
+import { LibraryPage } from './Dashboard/pages/LibraryPage';
+import { NotebooksPage } from './Dashboard/pages/NotebooksPage';
+import { SettingsPage } from './Dashboard/pages/SettingsPage';
+import { AiLayout } from './Dashboard/components/AiLayout';
 import Features from './page/Features';
 import Performance from './page/Performance';
 import Security from './page/Security';
@@ -38,7 +44,26 @@ function App() {
           <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
             <Routes>
               {/* ── Standalone Pages ── */}
+<<<<<<< HEAD
               <Route path="/dashboard" element={<Landing />} />
+=======
+              <Route path="/features" element={<Features />} />
+              <Route path="/performance" element={<Performance />} />
+              <Route path="/security" element={<Security />} />
+              <Route path="/pricing" element={<Pricing />} />
+
+              {/* ── AI Dashboard (Gemini-style) ── */}
+              <Route path="/dashboard" element={<AiLayout />}>
+                <Route index element={<Landing />} />
+                <Route path="images" element={<ImagesPage />} />
+                <Route path="videos" element={<VideosPage />} />
+                <Route path="library" element={<LibraryPage />} />
+                <Route path="notebooks" element={<NotebooksPage />} />
+                <Route path="settings" element={<SettingsPage />} />
+              </Route>
+              <Route path="/login" element={<SignIn />} />
+              <Route path="/signup" element={<SignUp />} />
+>>>>>>> 715814d4b475b37fb9e9e7efd451d8e255bd22cb
 
               {/* ── User Panel (with Header & Footer) ─── */}
               <Route element={<UserLayout />}>

@@ -1,0 +1,8 @@
+The Bulk Data Trigger Prompt
+[BULK DATA REQUEST]Topic: [Insert your topic, keyword, or concept here]
+Action Required: Generate a massive, highly detailed compilation of written data regarding the topic above.
+Formatting Rules:
+- No conversational filler: Start immediately with the data.
+- High Density: Maximize the amount of factual information, statistics, and details.
+- Strict Structure: Organize the data using clear headings, bullet points, and tables where applicable.
+- Required Sections: Include a Core Definition, Key Characteristics/Components, Historical Context or Timeline, Major Sub-categories, and Real-world Applications/Use Cases.

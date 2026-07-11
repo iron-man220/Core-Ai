@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import userRouter from './routes/user.js';
+import geminiRouter from './routes/gemini.js';
 import errorHandler from './middlewares/errorHandler.js';
 
 const app = express();
@@ -11,6 +12,7 @@ app.use(express.json());
 
 // 🔹 Route Mapping
 app.use('/api/users', userRouter);
+app.use('/api/gemini', geminiRouter);
 
 // 🔹 Global Error Handler
 app.use(errorHandler);

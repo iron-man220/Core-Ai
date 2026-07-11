@@ -30,36 +30,64 @@
   --destructive: 350 84.2% 60.2%;
   --destructive-foreground: 0 0% 100%;
 
+  /* Sidebar specific */
+  --sidebar: 250 30% 93%;
+  --sidebar-hover: 250 30% 87%;
+
+  /* Warning */
+  --warning: 38 92% 50%;
+  --warning-foreground: 38 92% 15%;
+
+  /* Send Button */
+  --send-bg: 221 83% 53%; /* #3b82f6 */
+  --send-foreground: 0 0% 100%;
+
   --radius: 0.75rem;
 }
 
-/* ── Dark-mode palette ── */
+/* ── Dark-mode palette (Gemini Exact) ── */
 .dark {
-  /* Deep Midnight Dark Mode */
-  --background: 222.2 84% 4.9%;
-  --foreground: 210 40% 98%;
-  --card: 222.2 84% 8%;
-  --card-foreground: 210 40% 98%;
+  /* Main Background: #131314 */
+  --background: 240 3% 8%;
+  
+  /* Text: #e3e3e3 */
+  --foreground: 0 0% 89%;
+  
+  --card: 210 3% 12%;
+  --card-foreground: 0 0% 89%;
 
-  /* Bright Neon Violet Primary */
   --primary: 262 83% 65%;
   --primary-foreground: 222.2 47.4% 11.2%;
 
-  --secondary: 217.2 32.6% 14%;
-  --secondary-foreground: 210 40% 98%;
+  --secondary: 210 5% 16%;
+  --secondary-foreground: 0 0% 89%;
 
-  --muted: 217.2 32.6% 17.5%;
-  --muted-foreground: 215 20.2% 65.1%;
+  /* Sidebar Background: #1e1f20 */
+  --sidebar: 210 3% 12%;
+  /* Sidebar Hover: #282a2c */
+  --sidebar-hover: 210 5% 16%;
 
-  --accent: 217.2 32.6% 17.5%;
-  --accent-foreground: 210 40% 98%;
+  /* Muted Text: #c4c7c5 */
+  --muted: 210 5% 16%;
+  --muted-foreground: 150 2% 78%;
 
-  --border: 217.2 32.6% 17.5%;
-  --input: 217.2 32.6% 17.5%;
+  --accent: 210 5% 16%;
+  --accent-foreground: 0 0% 89%;
+
+  /* Borders: slightly lighter than background */
+  --border: 210 5% 16%;
+  --input: 210 3% 12%;
   --ring: 262 83% 65%;
 
   --destructive: 0 62.8% 30.6%;
   --destructive-foreground: 210 40% 98%;
+
+  --warning: 38 92% 50%;
+  --warning-foreground: 0 0% 100%;
+
+  /* Send Button */
+  --send-bg: 221 83% 53%; /* #3b82f6 */
+  --send-foreground: 0 0% 100%;
 }
 
 /* ── Tailwind v4 @theme — maps CSS vars to Tailwind color utilities ── */
@@ -88,6 +116,18 @@
 
   --color-destructive: hsl(var(--destructive));
   --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  /* Sidebar */
+  --color-sidebar: hsl(var(--sidebar));
+  --color-sidebar-hover: hsl(var(--sidebar-hover));
+
+  /* Warning */
+  --color-warning: hsl(var(--warning));
+  --color-warning-foreground: hsl(var(--warning-foreground));
+
+  /* Send Button */
+  --color-send-bg: hsl(var(--send-bg));
+  --color-send-foreground: hsl(var(--send-foreground));
 
   --radius: 0.75rem;
 }
@@ -125,14 +165,18 @@ body {
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
-  background-image: linear-gradient(to right, var(--color-primary), #60a5fa);
+  background-image: linear-gradient(to right, var(--color-primary), var(--color-secondary-foreground));
 }
 
 @utility text-gradient-warm {
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
-  background-image: linear-gradient(to right, var(--color-primary), #c084fc, #ec4899);
+  background-image: linear-gradient(to right, var(--color-primary), var(--color-accent-foreground));
+}
+
+@utility gemini-bg {
+  background: radial-gradient(circle at center, #1c2635 0%, hsl(var(--background)) 70%);
 }
 
 /* ── Hide Scrollbar Globally ── */

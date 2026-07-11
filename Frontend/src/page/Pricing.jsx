@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import WebGLBackground from '../components/WebGLBackground';
 
 const ScrollReveal = ({ children, delay = 0, className = '' }) => {
   const ref = useRef(null);
@@ -29,6 +28,10 @@ const Pricing = () => {
       transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
       className="relative min-h-screen bg-background text-foreground py-20 px-6 md:px-12 overflow-hidden"
     >
+<<<<<<< HEAD
+=======
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-blue-500/5 pointer-events-none" />
+>>>>>>> 715814d4b475b37fb9e9e7efd451d8e255bd22cb
       <button onClick={() => navigate(-1)} className="relative z-10 mb-12 flex items-center gap-2 hover:text-primary transition-colors font-medium">
         <ArrowLeft className="w-5 h-5" /> Back
       </button>

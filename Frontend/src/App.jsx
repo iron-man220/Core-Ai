@@ -44,9 +44,6 @@ function App() {
           <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
             <Routes>
               {/* ── Standalone Pages ── */}
-<<<<<<< HEAD
-              <Route path="/dashboard" element={<Landing />} />
-=======
               <Route path="/features" element={<Features />} />
               <Route path="/performance" element={<Performance />} />
               <Route path="/security" element={<Security />} />
@@ -63,7 +60,6 @@ function App() {
               </Route>
               <Route path="/login" element={<SignIn />} />
               <Route path="/signup" element={<SignUp />} />
->>>>>>> 715814d4b475b37fb9e9e7efd451d8e255bd22cb
 
               {/* ── User Panel (with Header & Footer) ─── */}
               <Route element={<UserLayout />}>

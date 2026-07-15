@@ -186,6 +186,23 @@ const Landing = () => {
   const [firstName, setFirstName] = useState('USER');
 
   const messagesEndRef = useRef(null);
+  const textareaRef = useRef(null);
+  const menuRef = useRef(null);
+
+  // Close attachment menu on outside click
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsMenuOpen(false);
+      }
+    };
+    if (isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMenuOpen]);
 
   // Load first name from local storage
   useEffect(() => {
@@ -295,6 +312,9 @@ const Landing = () => {
     setIsGenerating(true);
     setInputValue('');
     setIsMenuOpen(false);
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+    }
 
     // Emit event
     socket.emit('sendMessage', { prompt: promptText.trim(), messageId: aiMsgId });
@@ -378,7 +398,7 @@ const Landing = () => {
 
       {/* Floating Bottom Input Bar */}
       <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-background via-background/95 to-transparent pt-8 pb-6 px-4 md:px-8 z-40">
-        <div className="max-w-3xl mx-auto relative">
+        <div className="max-w-3xl mx-auto relative" ref={menuRef}>
           
           {/* Attachment Menu Popup */}
           <AnimatePresence>
@@ -404,6 +424,10 @@ const Landing = () => {
                     Create image
                   </button>
                   <button className="flex items-center gap-3 px-4 py-2.5 text-sm text-foreground hover:bg-sidebar-hover rounded-xl transition-colors text-left">
+                    <Sparkles className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
+                    Enhance image
+                  </button>
+                  <button className="flex items-center gap-3 px-4 py-2.5 text-sm text-foreground hover:bg-sidebar-hover rounded-xl transition-colors text-left border-t border-border mt-1 pt-2">
                     <Video className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
                     Create video
                   </button>
@@ -413,43 +437,62 @@ const Landing = () => {
           </AnimatePresence>
 
           {/* Main Input Box */}
-          <div className="bg-card border border-border rounded-full p-1.5 flex items-center shadow-md focus-within:ring-2 focus-within:ring-primary/40 focus-within:border-primary/50 transition-all relative">
-            <button 
+          <div className="bg-[#f0f4f9] dark:bg-[#1e1f20] rounded-[24px] p-2 pl-3 flex items-end shadow-sm transition-all relative min-h-[56px]">
+            <motion.button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-3 text-muted-foreground hover:text-foreground hover:bg-muted rounded-full transition-colors flex-shrink-0 ml-1 active:scale-95"
+              className="p-2 mb-[4px] text-muted-foreground hover:bg-black/5 dark:hover:bg-white/10 rounded-full transition-colors flex-shrink-0"
+              whileTap={{ scale: 0.85 }}
             >
-              {isMenuOpen ? <X className="w-5 h-5" strokeWidth={1.5} /> : <Plus className="w-5 h-5" strokeWidth={1.5} />}
-            </button>
+              <motion.div
+                animate={{ rotate: isMenuOpen ? 45 : 0 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              >
+                <Plus className="w-5 h-5" strokeWidth={1.5} />
+              </motion.div>
+            </motion.button>
             
-            <input 
-              type="text" 
+            <textarea
+              ref={textareaRef}
               value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') handleSendMessage();
+              onChange={(e) => {
+                setInputValue(e.target.value);
+                e.target.style.height = 'auto';
+                e.target.style.height = Math.min(e.target.scrollHeight, 200) + 'px';
               }}
-              placeholder={socketConnected ? "Ask Gemini (via WebSocket)..." : "Connecting to WebSocket server..."} 
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSendMessage();
+                }
+              }}
+              placeholder={socketConnected ? "Ask Gemini" : "Connecting..."}
               disabled={isGenerating}
-              className="flex-1 bg-transparent border-none focus:outline-none text-foreground placeholder:text-muted-foreground/75 px-3 py-3 text-sm disabled:opacity-50"
+              rows={1}
+              className="flex-1 max-h-[200px] bg-transparent border-none focus:outline-none text-foreground placeholder:text-muted-foreground/75 px-3 py-2.5 mb-[2px] text-[15px] disabled:opacity-50 resize-none overflow-y-auto min-h-[40px]"
             />
             
-            <div className="flex items-center gap-2 pr-1">
+            <div className="flex items-center gap-1 pr-1 mb-[4px]">
               {isGenerating ? (
-                <div className="p-3 bg-muted text-primary rounded-full transition-colors">
+                <button className="p-2 text-muted-foreground">
                   <RefreshCw className="w-5 h-5 animate-spin" strokeWidth={2} />
-                </div>
+                </button>
               ) : inputValue.trim().length > 0 ? (
                 <button 
                   onClick={() => handleSendMessage()}
                   disabled={!socketConnected || isGenerating}
-                  className="p-3 bg-primary hover:opacity-90 disabled:opacity-40 text-white rounded-full transition-all active:scale-95 shadow-sm disabled:cursor-not-allowed"
+                  className="p-2 bg-foreground text-background hover:opacity-80 rounded-full transition-all flex items-center justify-center disabled:opacity-40"
                 >
                   <ArrowUp className="w-5 h-5" strokeWidth={2} />
                 </button>
               ) : (
-                <button className="p-3 text-muted-foreground hover:text-foreground hover:bg-muted rounded-full transition-colors">
-                  <Mic className="w-5 h-5" strokeWidth={1.5} />
-                </button>
+                <>
+                  <button className="p-2 text-muted-foreground hover:bg-black/5 dark:hover:bg-white/10 rounded-full transition-colors hidden sm:flex">
+                    <ImageIcon className="w-5 h-5" strokeWidth={1.5} />
+                  </button>
+                  <button className="p-2 text-muted-foreground hover:bg-black/5 dark:hover:bg-white/10 rounded-full transition-colors">
+                    <Mic className="w-5 h-5" strokeWidth={1.5} />
+                  </button>
+                </>
               )}
             </div>
           </div>

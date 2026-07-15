@@ -20,6 +20,7 @@ import Features from './page/Features';
 import Performance from './page/Performance';
 import Security from './page/Security';
 import Pricing from './page/Pricing';
+import Blog from './page/Blog';
 
 // ─── Auth Pages ───────────────────────────────────────────
 import SignIn from './Auth/SignIn';
@@ -48,6 +49,7 @@ function App() {
               <Route path="/performance" element={<Performance />} />
               <Route path="/security" element={<Security />} />
               <Route path="/pricing" element={<Pricing />} />
+              <Route path="/blog" element={<Blog />} />
 
               {/* ── AI Dashboard (Gemini-style) ── */}
               <Route path="/dashboard" element={<AiLayout />}>
@@ -68,6 +70,7 @@ function App() {
                 <Route path="/shop" element={<Shop />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/blog" element={<Blog />} />
                 <Route path="/features" element={<Features />} />
                 <Route path="/performance" element={<Performance />} />
                 <Route path="/security" element={<Security />} />

@@ -47,6 +47,25 @@ export const AiLayout = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Close desktop sidebar on outside click
+  useEffect(() => {
+    const handleSidebarClickOutside = (event) => {
+      if (window.innerWidth < 1024 || !desktopOpen) return;
+      
+      const sidebarEl = document.getElementById('ai-desktop-sidebar');
+      const logoBtnEl = document.getElementById('header-logo-btn');
+      
+      if (
+        sidebarEl && !sidebarEl.contains(event.target) &&
+        (!logoBtnEl || !logoBtnEl.contains(event.target))
+      ) {
+        setDesktopOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleSidebarClickOutside);
+    return () => document.removeEventListener('mousedown', handleSidebarClickOutside);
+  }, [desktopOpen]);
+
   const handleLogout = () => {
     navigate('/login');
   };
@@ -94,35 +113,50 @@ export const AiLayout = () => {
         <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
 
           {/* Header Bar */}
-          <header className={`flex items-center justify-between p-4 z-50 sticky top-0 transition-all ${!desktopOpen || mobileOpen ? 'border-b border-border bg-background/80 backdrop-blur-sm' : 'bg-transparent'
-            }`}>
+          <header className="flex items-center justify-between p-4 z-50 sticky top-0 bg-transparent transition-all">
 
-            {/* Left: Hamburger & Logo (Visible on mobile, or on desktop when sidebar is closed) */}
-            <div className={`flex items-center ${!desktopOpen ? 'flex' : 'lg:hidden'}`}>
-              <button
-                onClick={() => {
-                  if (window.innerWidth >= 1024) {
-                    setDesktopOpen(true);
-                  } else {
-                    setMobileOpen(true);
-                  }
-                }}
-                className="p-2 -ml-2 rounded-xl text-muted-foreground hover:bg-sidebar-hover hover:text-foreground transition-colors"
-              >
-                <Menu className="w-6 h-6" strokeWidth={1.5} />
-              </button>
-              <span className="ml-2 font-semibold text-[17px] text-foreground">Core AI</span>
-            </div>
+            {/* Left: Logo toggle — only shown when sidebar is closed */}
+            <AnimatePresence>
+              {(!desktopOpen || mobileOpen) && (
+                <motion.div
+                  key="header-logo"
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -12 }}
+                  transition={{ duration: 0.22, ease: 'easeOut', delay: !desktopOpen ? 0.18 : 0 }}
+                  className="flex items-center"
+                >
+                  <button
+                    id="header-logo-btn"
+                    onClick={() => {
+                      if (window.innerWidth >= 1024) {
+                        setDesktopOpen(true);
+                      } else {
+                        setMobileOpen(true);
+                      }
+                    }}
+                    className="p-1.5 -ml-1.5 rounded-xl hover:bg-sidebar-hover transition-colors"
+                  >
+                    <img
+                      src="/logo.png"
+                      alt="Core AI"
+                      className="h-7 w-auto object-contain dark:brightness-0 dark:invert transition-all"
+                    />
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Right: Settings Dropdown */}
             <div className="ml-auto relative" ref={settingsMenuRef}>
               <button
                 onClick={() => setIsSettingsOpen(!isSettingsOpen)}
                 aria-label="Settings"
-                className={`relative p-2 rounded-xl transition-all duration-300 active:scale-90 flex items-center justify-center ${isSettingsOpen
+                className={`relative p-2 flex items-center justify-center rounded-xl transition-all duration-300 ${
+                  isSettingsOpen
                     ? 'bg-primary text-primary-foreground shadow-sm shadow-primary/20'
-                    : 'bg-sidebar/50 hover:bg-sidebar backdrop-blur-md border border-border text-muted-foreground hover:text-foreground'
-                  }`}
+                    : 'bg-sidebar/50 hover:bg-sidebar/80 text-muted-foreground hover:text-foreground border border-border'
+                }`}
               >
                 <Settings className={`w-5 h-5 transition-transform duration-300 ${isSettingsOpen ? 'rotate-90' : 'rotate-0'}`} strokeWidth={1.8} />
               </button>

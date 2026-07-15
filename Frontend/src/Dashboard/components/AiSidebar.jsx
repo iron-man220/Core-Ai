@@ -111,6 +111,7 @@ const SidebarContent = ({ onClose, onToggleDesktop }) => {
             </button>
           ) : (
             <button
+              onClick={onToggleDesktop}
               className="p-2 rounded-full hover:bg-sidebar-hover text-muted-foreground hover:text-foreground transition-colors"
             >
               <PanelLeftClose className="w-5 h-5" strokeWidth={1.5} />
@@ -239,15 +240,22 @@ export const AiSidebar = ({ mobileOpen, onClose, desktopOpen, onToggleDesktop })
       <AnimatePresence initial={false}>
         {desktopOpen && (
           <motion.div
-            initial={{ width: 0, opacity: 0 }}
-            animate={{ width: 256, opacity: 1 }}
-            exit={{ width: 0, opacity: 0 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="hidden lg:block h-full flex-shrink-0 overflow-hidden"
+            id="ai-desktop-sidebar"
+            initial={{ width: 0 }}
+            animate={{ width: 256 }}
+            exit={{ width: 0 }}
+            transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="hidden lg:flex h-full flex-shrink-0 overflow-hidden"
           >
-            <div className="w-64 h-full">
+            <motion.div
+              initial={{ x: -256 }}
+              animate={{ x: 0 }}
+              exit={{ x: -256 }}
+              transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
+              className="w-64 h-full flex-shrink-0"
+            >
               <SidebarContent onClose={null} onToggleDesktop={onToggleDesktop} />
-            </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -269,10 +277,13 @@ export const AiSidebar = ({ mobileOpen, onClose, desktopOpen, onToggleDesktop })
             {/* Drawer */}
             <motion.div
               key="drawer"
-              initial={{ x: -280 }}
-              animate={{ x: 0 }}
-              exit={{ x: -280 }}
-              transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+              initial={{ x: -280, opacity: 0.5 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -280, opacity: 0 }}
+              transition={{
+                duration: 0.38,
+                ease: [0.25, 0.46, 0.45, 0.94]
+              }}
               className="fixed left-0 top-0 bottom-0 w-64 z-50 lg:hidden"
             >
               <SidebarContent onClose={onClose} onToggleDesktop={null} />

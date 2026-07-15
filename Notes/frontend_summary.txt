@@ -1,0 +1,178 @@
+﻿# CORE AI — Frontend Summary Notes
+# Prepared for Presentation
+# ============================================================
+
+## PROJECT OVERVIEW
+Core AI is a Gemini-style AI chat dashboard built with:
+- React + Vite (Frontend)
+- Express + Socket.IO (Backend)
+- MongoDB (in-memory via mongodb-memory-server for local dev)
+- Framer Motion (animations)
+- Lucide React (icons)
+- TailwindCSS (styling)
+
+# ============================================================
+## 1. AUTHENTICATION PAGES
+# ============================================================
+
+FILES:
+  - Frontend/src/Auth/SignIn.jsx
+  - Frontend/src/Auth/SignUp.jsx
+
+FEATURES:
+  - Workspace Registration (SignUp) with multi-field form
+  - Email/Password login (SignIn)
+  - Routes: /signup, /login
+  - On success -> redirects to /dashboard
+
+# ============================================================
+## 2. DASHBOARD LAYOUT (AiLayout.jsx)
+# ============================================================
+
+FILE: Frontend/src/Dashboard/components/AiLayout.jsx
+
+FEATURES:
+  - Full-screen flex layout (sidebar + main area)
+  - Atmospheric background glow effects (dark/light mode)
+  - Header: always transparent bg (matches page background #050505 dark / #ffffff light)
+  - Settings toggle button: simple 90-degree CSS rotation on click (removed metallic/hover effects)
+  - Sticky top header bar with:
+      * Hamburger menu (mobile / when sidebar collapsed)
+      * Settings dropdown with 14 tabs (General, Billing, Security, etc.)
+      * Light/Dark theme toggle pill (animated)
+      * Logout button
+  - Sidebar state managed: desktopOpen (default: true), mobileOpen
+
+# ============================================================
+## 3. LEFT SIDEBAR (AiSidebar.jsx)
+# ============================================================
+
+FILE: Frontend/src/Dashboard/components/AiSidebar.jsx
+
+FEATURES:
+  - Navigation items: Images (New badge), Videos, Library
+  - Notebooks section: New Notebook + My Notebooks
+  - Recents list (pinned first item)
+  - Upgrade to Unlimited Access button (links to /pricing)
+  - User profile (avatar with gradient, name, email from localStorage)
+  - Desktop collapse/expand button (PanelLeftClose icon) — FIXED
+  - Desktop sidebar closes automatically when clicking outside of it
+  - Header logo toggle: only visible when sidebar is CLOSED (AnimatePresence controlled)
+    * Fades + slides in after sidebar finishes closing (0.18s delay)
+    * Exits immediately when sidebar opens
+    * On mobile: shows when mobile drawer is open
+  - Header toggle: Hamburger (Menu icon) replaced with Core AI logo image
+    * Clicking logo expands sidebar on desktop / opens drawer on mobile
+    * Logo auto-inverts in dark mode via dark:brightness-0 dark:invert
+    * 'Core AI' text label removed (logo identifies the app)
+
+ANIMATIONS (Animista-style):
+  - Desktop sidebar: slide-in-left on open, slide-out-left on close
+    * Cubic-bezier easing: [0.25, 0.46, 0.45, 0.94] | duration: 0.38s
+  - Mobile drawer: same easing, overlay backdrop with blur
+  - Both modes use translateX (not width) for GPU-accelerated smoothness
+
+# ============================================================
+## 4. DASHBOARD HOME / CHAT PAGE (Home.jsx)
+# ============================================================
+
+FILE: Frontend/src/Dashboard/pages/Home.jsx
+
+FEATURES:
+  - Greeting: "What can I help with, {FIRSTNAME}?" (name from localStorage)
+  - Real-time AI chat via Socket.IO WebSocket
+  - Streaming responses (chunk-by-chunk like Gemini)
+  - Loading skeleton (3 bouncing dots) while AI responds
+  - Custom Markdown renderer:
+      * Bold, inline code, code blocks (with Copy button)
+      * Tables, headers (H1/H2/H3), bullet lists, horizontal rules
+
+PROMPT BOX (Gemini-style):
+  - Container: rounded-[24px] with bg-[#f0f4f9] (light) / bg-[#1e1f20] (dark)
+  - Auto-expanding textarea (grows up to 200px height)
+  - Plus (+) button on left:
+      * Rotates 45deg when attachment menu opens (spring animation)
+      * whileTap scale: 0.85 for tactile feedback
+  - Attachment popup menu: Upload files, Add from Drive, Create image, Enhance image, Create video
+    * Closes automatically when clicking anywhere outside the menu
+  - Right side (idle): Image icon + Mic icon
+  - Right side (typing): Send button (ArrowUp, high-contrast bg)
+  - Enter to send, Shift+Enter for new line
+
+# ============================================================
+## 5. OTHER DASHBOARD PAGES
+# ============================================================
+
+FILES:
+  - ImagesPage.jsx  -> /dashboard/images
+  - VideosPage.jsx  -> /dashboard/videos
+  - LibraryPage.jsx -> /dashboard/library
+  - NotebooksPage.jsx -> /dashboard/notebooks
+  - ProfilePage.jsx -> /dashboard/profile
+
+# ============================================================
+## 6. USER ONBOARDING MODAL (UserOnboardingModal.jsx)
+# ============================================================
+
+FILE: Frontend/src/Dashboard/components/UserOnboardingModal.jsx
+  - Shown on first dashboard visit
+  - Collects user preferences / workspace setup
+
+# ============================================================
+## 7. BACKEND (for reference)
+# ============================================================
+
+FILE: Backend/src/server.js
+  - Express server on port 5000
+  - Socket.IO for real-time bidirectional chat
+  - MongoDB via mongodb-memory-server (auto-starts locally)
+  - Firebase auth fallback to local DB if firebase-Auth.json not found
+
+# ============================================================
+## 8. KEY BUGS FIXED
+# ============================================================
+
+[FIX 1] Vite Build Crash
+  - Removed corrupted: node_modules/lucide-react/dist/esm/icons/ticket-minus.js.map
+
+[FIX 2] Sidebar collapse button not working (desktop)
+  - Added missing onClick={onToggleDesktop} to PanelLeftClose button in AiSidebar.jsx
+
+[FIX 3] Input was a single-line input, now auto-expanding textarea
+  - Resets height on send, supports multiline prompts
+
+# ============================================================
+## 9. RUNNING LOCALLY
+# ============================================================
+
+Frontend:
+  cd Frontend
+  npm run dev
+  -> http://localhost:5173
+
+Backend:
+  cd Backend
+  node src/server.js
+  -> http://localhost:5000
+  (MongoDB starts automatically, no installation needed)
+
+# ============================================================
+## STATUS: FRONTEND READY FOR PRESENTATION
+# ============================================================
+
+
+
+
+
+
+
+
+
+- **Pricing Page**: Completely redesigned to match Emergent.sh aesthetic (sleek, minimalistic dark-glass theme with glowing purple/blue accents). Introduced a Monthly/Yearly toggle switch and streamlined plans into a 2-card layout (Hobby/Free & Pro).
+
+
+- **Page Transitions**: Added cinematic circular page roll effect (CinematicTransitionProvider) — clip-path circle expands from nav link click origin, sweeps full screen, then contracts to reveal new page. Includes cylindrical arc highlight and logo stamp. Applied to Features, Pricing, Blog, About nav links in Header.jsx.
+
+- **Blog Page**: Redesigned to match Contra's premium aesthetic. Soft brutalist grid, large clean typography, professional Unsplash image integration, generated Core-AI specific content, and smooth stagger fade-up scroll reveal effects.
+
+- **Blog Page GSAP Integration**: Completely transformed Blog layout using GSAP and ScrollTrigger. Implemented pinned cinematic hero that fades out while featured image scales up, a horizontal-scrolling track for blog posts pinned to vertical scroll, and a scrubbed text reveal for the CTA. Rest of the site architecture untouched.

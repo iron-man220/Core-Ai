@@ -19,5 +19,8 @@
     "mssql": "^11.0.1",
     "pg": "^8.22.0",
     "socket.io": "^4.8.3"
+  },
+  "devDependencies": {
+    "mongodb-memory-server": "^11.2.0"
   }
 }
